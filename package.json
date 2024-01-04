@@ -1,5 +1,5 @@
 {
-  "name": "object-pick",
+  "name": "@arthur-lobo/object-pick",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Arthur Lobo <64273139+ArthurLobopro@users.noreply.github.com>",
@@ -9,6 +9,9 @@
   },
   "devDependencies": {
     "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "exports": {
     ".": {
