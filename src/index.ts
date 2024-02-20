@@ -1,4 +1,4 @@
-function cloneValue<T>(value: T): T {
+export function clone<T>(value: T): T {
     if (typeof value === "object") {
         if (Array.isArray(value)) {
             return cloneArray(value) as T
@@ -13,13 +13,13 @@ function cloneValue<T>(value: T): T {
 }
 
 function cloneArray<T extends any[]>(array: T): T {
-    return array.map(cloneValue) as T
+    return array.map(clone) as T
 }
 
 function cloneObject<T extends object>(obj: T): T {
     return Object.fromEntries(
         Object.entries(obj)
-            .map(cloneValue)
+            .map(clone)
     ) as T
 }
 
@@ -36,7 +36,7 @@ export function pick<T extends untypedObject, K extends keyof T>(obj: T, props: 
     return Object.fromEntries(
         Object.entries(obj)
             .filter(([key]) => props.includes(key as K))
-            .map((([key, value]) => [key, cloneValue(value)]))
+            .map((([key, value]) => [key, clone(value)]))
     ) as PickProperties<T, K>
 }
 
@@ -44,7 +44,7 @@ export function pickAllExcept<T extends untypedObject, K extends keyof T>(obj: T
     return Object.fromEntries(
         Object.entries(obj)
             .filter(([key]) => !props.includes(key as K))
-            .map((([key, value]) => [key, cloneValue(value)]))
+            .map((([key, value]) => [key, clone(value)]))
     ) as OmitProperties<T, K>
 }
 
