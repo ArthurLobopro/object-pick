@@ -48,4 +48,7 @@ export function pickAllExcept<T extends untypedObject, K extends keyof T>(obj: T
     ) as OmitProperties<T, K>
 }
 
+/**
+ * @deprecated This function will be removed in the next version, please use `clone` instead
+ */
 export const pickAll = cloneObject
