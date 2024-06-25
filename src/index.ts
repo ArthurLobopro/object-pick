@@ -35,16 +35,30 @@ type OmitProperties<T, K extends keyof T> = {
 export function pick<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
     return Object.fromEntries(
         Object.entries(obj)
-            .filter(([key]) => props.includes(key as K))
-            .map((([key, value]) => [key, clone(value)]))
+            // .filter(([key]) => props.includes(key as K))
+            // .map((([key, value]) => [key, clone(value)]))
+            .reduce((acc, [key, value]) => {
+                if (props.includes(key as K)) {
+                    acc.push([key, clone(value)])
+                }
+
+                return acc
+            }, [] as any[])
     ) as PickProperties<T, K>
 }
 
 export function pickAllExcept<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
     return Object.fromEntries(
         Object.entries(obj)
-            .filter(([key]) => !props.includes(key as K))
-            .map((([key, value]) => [key, clone(value)]))
+            // .filter(([key]) => !props.includes(key as K))
+            // .map((([key, value]) => [key, clone(value)]))
+            .reduce((acc, [key, value]) => {
+                if (!props.includes(key as K)) {
+                    acc.push([key, clone(value)])
+                }
+
+                return acc
+            }, [] as any[])
     ) as OmitProperties<T, K>
 }
 
