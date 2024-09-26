@@ -17,10 +17,13 @@ function cloneArray<T extends any[]>(array: T): T {
 }
 
 function cloneObject<T extends object>(obj: T): T {
-    return Object.fromEntries(
-        Object.entries(obj)
-            .map(clone)
-    ) as T
+    const clonedObj = {} as T
+
+    for (const key in obj) {
+        clonedObj[key] = clone(obj[key])
+    }
+
+    return clonedObj
 }
 
 type untypedObject = { [key: string]: any }
