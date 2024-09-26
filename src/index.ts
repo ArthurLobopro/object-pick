@@ -36,33 +36,25 @@ type OmitProperties<T, K extends keyof T> = {
 }
 
 export function pick<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
-    return Object.fromEntries(
-        Object.entries(obj)
-            // .filter(([key]) => props.includes(key as K))
-            // .map((([key, value]) => [key, clone(value)]))
-            .reduce((acc, [key, value]) => {
-                if (props.includes(key as K)) {
-                    acc.push([key, clone(value)])
-                }
+    const pickedObj = {} as T
 
-                return acc
-            }, [] as any[])
-    ) as PickProperties<T, K>
+    for (const key of props) {
+        pickedObj[key] = clone(obj[key])
+    }
+
+    return pickedObj as PickProperties<T, K>
 }
 
 export function pickAllExcept<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
-    return Object.fromEntries(
-        Object.entries(obj)
-            // .filter(([key]) => !props.includes(key as K))
-            // .map((([key, value]) => [key, clone(value)]))
-            .reduce((acc, [key, value]) => {
-                if (!props.includes(key as K)) {
-                    acc.push([key, clone(value)])
-                }
+    const pickedObj = {} as T
 
-                return acc
-            }, [] as any[])
-    ) as OmitProperties<T, K>
+    for (const key in obj) {
+        if (!props.includes(key as unknown as K)) {
+            pickedObj[key] = clone(obj[key])
+        }
+    }
+
+    return pickedObj as OmitProperties<T, K>
 }
 
 /**
