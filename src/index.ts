@@ -1,3 +1,39 @@
+type untypedObject = { [key: string]: any }
+type PickProperties<T, K extends keyof T> = {
+    [P in K]: T[P]
+}
+
+type OmitProperties<T, K extends keyof T> = {
+    [P in Exclude<keyof T, K>]: T[P]
+}
+
+export function pick<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
+    const pickedObj = {} as T
+
+    for (const key of props) {
+        pickedObj[key] = clone(obj[key])
+    }
+
+    return pickedObj as PickProperties<T, K>
+}
+
+/**
+ * @deprecated This function will be removed in the next version, please use `clone` instead
+ */
+export const pickAll = cloneObject
+
+export function pickAllExcept<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
+    const pickedObj = {} as T
+
+    for (const key in obj) {
+        if (!props.includes(key as unknown as K)) {
+            pickedObj[key] = clone(obj[key])
+        }
+    }
+
+    return pickedObj as OmitProperties<T, K>
+}
+
 export function clone<T>(value: T): T {
     if (typeof value === "object") {
         if (Array.isArray(value)) {
@@ -25,39 +61,3 @@ function cloneObject<T extends object>(obj: T): T {
 
     return clonedObj
 }
-
-type untypedObject = { [key: string]: any }
-type PickProperties<T, K extends keyof T> = {
-    [P in K]: T[P]
-}
-
-type OmitProperties<T, K extends keyof T> = {
-    [P in Exclude<keyof T, K>]: T[P]
-}
-
-export function pick<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
-    const pickedObj = {} as T
-
-    for (const key of props) {
-        pickedObj[key] = clone(obj[key])
-    }
-
-    return pickedObj as PickProperties<T, K>
-}
-
-export function pickAllExcept<T extends untypedObject, K extends keyof T>(obj: T, props: K[]) {
-    const pickedObj = {} as T
-
-    for (const key in obj) {
-        if (!props.includes(key as unknown as K)) {
-            pickedObj[key] = clone(obj[key])
-        }
-    }
-
-    return pickedObj as OmitProperties<T, K>
-}
-
-/**
- * @deprecated This function will be removed in the next version, please use `clone` instead
- */
-export const pickAll = cloneObject
