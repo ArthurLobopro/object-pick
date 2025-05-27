@@ -25,7 +25,7 @@ export function pick<T extends untypedObject, K extends keyof T>(
  */
 export const pickAll = cloneObject;
 
-export function pickAllExcept<T extends untypedObject, K extends keyof T>(
+export function omit<T extends untypedObject, K extends keyof T>(
     obj: T,
     props: K[],
 ) {
@@ -39,6 +39,11 @@ export function pickAllExcept<T extends untypedObject, K extends keyof T>(
 
     return pickedObj as OmitProperties<T, K>;
 }
+
+/**
+ * @deprecated This function will be removed in the next version, please use `omit` instead
+ */
+export const pickAllExcept = omit;
 
 export function clone<T>(value: T): T {
     if (typeof value === "object") {
