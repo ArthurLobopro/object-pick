@@ -14,7 +14,9 @@ export function pick<T extends untypedObject, K extends keyof T>(
     const pickedObj = {} as T;
 
     for (const key of props) {
-        pickedObj[key] = clone(obj[key]);
+        if (key in obj) {
+            pickedObj[key] = clone(obj[key]);
+        }
     }
 
     return pickedObj as PickProperties<T, K>;
