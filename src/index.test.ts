@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { clone, pick, pickAll } from ".";
+import { clone, pick, pickPrimitives } from ".";
 
 const obj = {
     a: "a",
@@ -17,7 +17,21 @@ test("Picking Optional Properties", () => {
 });
 
 test("Clonning object", () => {
-    expect(pickAll(obj)).toEqual(obj);
+    expect(clone(obj)).toEqual(obj);
+});
+
+test("Picking Primitives", () => {
+    const obj = {
+        a: "a",
+        b: [1, 2, 3],
+        c: 10,
+        d: new Date(),
+    };
+
+    expect(pickPrimitives(obj, ["a", "d"])).toEqual({
+        a: "a",
+        d: obj.d.valueOf(),
+    });
 });
 
 test("Clone value", () => {

@@ -74,3 +74,23 @@ function cloneObject<T extends object>(obj: T): T {
 
     return clonedObj;
 }
+
+type ValueOf<T> = T extends { valueOf(): infer R } ? R : T;
+type PickPrimitives<T, K extends keyof T> = {
+    [P in K]: ValueOf<T[P]>;
+};
+
+export function pickPrimitives<T extends untypedObject, K extends keyof T>(
+    obj: T,
+    props: K[],
+) {
+    const pickedObj = {} as T;
+
+    for (const key of props) {
+        if (key in obj) {
+            pickedObj[key] = obj[key].valueOf();
+        }
+    }
+
+    return pickedObj as PickPrimitives<T, K>;
+}
