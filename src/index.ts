@@ -66,6 +66,10 @@ function cloneArray<T extends any[]>(array: T): T {
 }
 
 function cloneObject<T extends object>(obj: T): T {
+    if (obj instanceof Date) {
+        return new Date(obj) as T;
+    }
+
     const clonedObj = {} as T;
 
     for (const key in obj) {
